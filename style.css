@@ -13,7 +13,6 @@ body {
     justify-content: center;
 }
 
-
 body::before {
     background-image: url("img/code.png");
     background-repeat: no-repeat;
@@ -40,7 +39,6 @@ body::before {
     position: relative;
 }
 
-
 .container__conteudo {
     display: flex;
     align-items: center;
@@ -58,10 +56,34 @@ body::before {
     background: #1875E8;
     padding: 16px 24px;
     width: 100%;
-    font-size: 24px;
+    font-size: clamp(16px, 2.5vw, 24px);
     font-weight: 700;
     border: none;
     margin-top: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 60px; /* Garante altura mínima para touch */
+}
+
+.container__botao:hover:not(:disabled) {
+    background: #1565C0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(24, 117, 232, 0.3);
+}
+
+.container__botao:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* Animação quando o botão é habilitado */
+.container__botao.botao-habilitado {
+    animation: botaoHabilitado 0.6s ease-out;
+}
+
+@keyframes botaoHabilitado {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 .container__texto {
@@ -80,9 +102,27 @@ body::before {
     border: none;
     color: #1875E8;
     padding: 2rem;
-    font-size: 24px;
+    font-size: clamp(18px, 3vw, 24px);
     font-weight: 700;
     font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.container__input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(24, 117, 232, 0.3);
+    transform: scale(1.02);
+}
+
+/* Animação de shake quando erra */
+.container__input.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
 .container__botoes {
@@ -92,8 +132,29 @@ body::before {
 
 h1 {
     font-family: 'Chakra Petch', sans-serif;
-    font-size: 72px;
+    font-size: clamp(36px, 8vw, 72px);
     padding-bottom: 3rem;
+    transition: all 0.3s ease;
+}
+
+/* Efeito de destaque quando acerta */
+h1.acerto-destaque {
+    animation: acertoDestaque 1s ease-out;
+}
+
+@keyframes acertoDestaque {
+    0% { 
+        transform: scale(1);
+        text-shadow: 0 0 0 rgba(24, 117, 232, 0);
+    }
+    50% { 
+        transform: scale(1.05);
+        text-shadow: 0 0 20px rgba(24, 117, 232, 0.8);
+    }
+    100% { 
+        transform: scale(1);
+        text-shadow: 0 0 10px rgba(24, 117, 232, 0.4);
+    }
 }
 
 p,
@@ -102,27 +163,33 @@ button {
 }
 
 .texto__paragrafo {
-    font-size: 32px;
+    font-size: clamp(20px, 3.5vw, 32px);
     font-weight: 400;
 }
 
 button:disabled {
-    background-color: gray;
+    background-color: #666;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
+/* Melhorias para dispositivos móveis */
 @media screen and (max-width: 1250px) {
-
-    h1 {
-        font-size: 50px;
+    .container {
+        width: 95%;
+        height: 90%;
     }
 
     .container__botao {
-        font-size: 16px;
+        font-size: clamp(18px, 4vw, 20px);
+        padding: 20px 24px; /* Botões maiores para touch */
+        min-height: 70px;
     }
 
-
-    .texto__paragrafo {
-        font-size: 24px;
+    .container__botoes {
+        gap: 1em;
+        flex-direction: column; /* Botões em coluna no mobile */
     }
 
     .container__imagem-pessoa {
@@ -135,6 +202,30 @@ button:disabled {
     }
 
     .container__informacoes {
-        padding: 1rem
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* Melhorias para telas muito pequenas */
+@media screen and (max-width: 480px) {
+    .container {
+        width: 98%;
+        height: 95%;
+        border-radius: 16px;
+    }
+
+    .container__informacoes {
+        padding: 1.5rem 1rem;
+    }
+
+    .container__input {
+        height: 60px;
+        padding: 1rem;
+        font-size: 18px;
+    }
+
+    .container__botao {
+        min-height: 65px;
+        margin-top: 1.5rem;
     }
 }
